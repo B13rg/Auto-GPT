@@ -1,5 +1,4 @@
 import os
-import openai
 from dotenv import load_dotenv
 # Load environment variables from .env file
 load_dotenv()
@@ -39,8 +38,12 @@ class Config(metaclass=Singleton):
         self.google_api_key = os.getenv("GOOGLE_API_KEY")
         self.custom_search_engine_id = os.getenv("CUSTOM_SEARCH_ENGINE_ID")
 
-        # Initialize the OpenAI API client
-        openai.api_key = self.openai_api_key
+        self.llama_model_path = os.getenv("LLAMA_MODEL_PATH")
+
+        if self.openai_api_key:
+            import openai
+            # Initialize the OpenAI API client
+            openai.api_key = self.openai_api_key
 
     def set_continuous_mode(self, value: bool):
         self.continuous_mode = value
@@ -71,3 +74,6 @@ class Config(metaclass=Singleton):
     
     def set_custom_search_engine_id(self, value: str):
         self.custom_search_engine_id = value
+
+    def llama_model_path(self, value: str):
+        self.llama_model_path = value

@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  thinker:
+    # connect with `docker attach auto-gpt-thinker-1`
+    build:
+      context: .
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./outputs:/app/outputs
+    env_file:
+      - .env

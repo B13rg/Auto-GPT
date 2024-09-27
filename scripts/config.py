@@ -1,5 +1,4 @@
 import os
-import openai
 from dotenv import load_dotenv
 # Load environment variables from .env file
 load_dotenv()
@@ -50,6 +49,12 @@ class Config(metaclass=Singleton):
         self.google_api_key = os.getenv("GOOGLE_API_KEY")
         self.custom_search_engine_id = os.getenv("CUSTOM_SEARCH_ENGINE_ID")
 
+        self.llama_model_path = os.getenv("LLAMA_MODEL_PATH")
+
+        if self.openai_api_key:
+            import openai
+            # Initialize the OpenAI API client
+            openai.api_key = self.openai_api_key
         self.pinecone_api_key = os.getenv("PINECONE_API_KEY")
         self.pinecone_region = os.getenv("PINECONE_ENV")
 
@@ -59,9 +64,6 @@ class Config(metaclass=Singleton):
         # User agent headers to use when browsing web
         # Some websites might just completely deny request with an error code if no user agent was found.
         self.user_agent_header = {"User-Agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.97 Safari/537.36"}
-
-        # Initialize the OpenAI API client
-        openai.api_key = self.openai_api_key
 
     def set_continuous_mode(self, value: bool):
         self.continuous_mode = value
@@ -92,6 +94,9 @@ class Config(metaclass=Singleton):
     
     def set_custom_search_engine_id(self, value: str):
         self.custom_search_engine_id = value
+
+    def llama_model_path(self, value: str):
+        self.llama_model_path = value
 
     def set_pinecone_api_key(self, value: str):
         self.pinecone_api_key = value
